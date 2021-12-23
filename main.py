@@ -39,19 +39,18 @@ def get_pin(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
     if call.data == "yes": #call.data это callback_data, которую мы указали при объявлении кнопки
-        f = open('users_teleg.txt', 'w')
-        inform = '{login}//{pin}'.format(login=login,pin = pin)
-        f.write(inform)
+        f = open('user_data.csv', 'r')
+        if login == f.readlines()[1] and pin == f.readlines()[3]:
+            bot.send_message(call.message.chat.id, 'Пользователь существует');
+        else:
+            start(bot.send_message(call.message.chat.id, 'Введите повторно /reg'))
 
         bot.send_message(call.message.chat.id, 'Отправка на сервер...');
+
+
     elif call.data == "no":
          start(bot.send_message(call.message.chat.id, 'Введите повторно /reg'))
 
 
 bot.polling(none_stop=True, interval=0)
 
-# digt = random.randint(100,999)
-# mess = 'Ваш пин: {digt}'.format(digt = digt)
-# f = open('users_teleg.txt', 'w')
-# inform = '{login}/{pin}/{pin}'.format(login=login,password=password,pin = digt)
-# f.write(inform)
